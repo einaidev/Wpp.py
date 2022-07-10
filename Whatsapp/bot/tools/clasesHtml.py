@@ -1,0 +1,16 @@
+qrcode_class = "_2UwZ_"
+input_class = '_3uMse'
+wellcome_class = "zaKsw",
+AllChats_class = "lhggkp7q ln8gz9je rx9719la"
+painelchat_class = "_3uIPm WYyr1"
+count_class = "l7jjieqr cfzgl7ar ei5e7seu h0viaqh7 tpmajp1w c0uhu3dl riy2oczp dsh4tgtl sy6s5v3r gz7w46tb lyutrhe2 qfejxiq4 fewfhwl7 ovhn1urg ap18qm3b ikwl5qvt j90th5db aumms1qt"
+messageguildname_class = "ggj6brxn gfz4du6o r7fjleex g0rxnol2 lhj4utae le5p0ye3 l7jjieqr i0jNr"
+message_class = "Hy9nV"
+author_class = "l7jjieqr i0jNr"
+botuserImage_class = "_8hzr9 M0JmA i0jNr"
+configbarname_class = "_2oldI dJxPU"
+optionsbutton_aria_label = "Mais opções"
+username_class= "ggj6brxn gfz4du6o r7fjleex g0rxnol2 lhj4utae le5p0ye3 i0jNr"
+description_class = "cw3vfol9 i0jNr selectable-text copyable-text"
+configbtn_aria_label = "Configurações"
+back_btn_aria_label= "Voltar"
