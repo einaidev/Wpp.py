@@ -17,15 +17,26 @@ class Message:
         self.channel.thumbnail = element.find_previous("img", class_=chatimage_class, draggable="false", style = "visibility: visible;")["src"]
 
         title = self.channel.name
-        driver.find_element(By.XPATH, "//span[@title='{0}'".format(title)).click()
+        try:
+            driver.find_element(By.XPATH, "//span[@title='{0}']".format(title)).click()
+        except:
+            driver.find_element(By.XPATH, "//span[@title='{0}']".format(self.name)).click()
         time.sleep(1)
 
-        el = driver.find_element(By.XPATH, "//div[@class='{0}']//span[@title={1!r} and @class={2!r}]".format("_21nHd", title, userinfo_class)).click()
-
-
+        try:
+            el = driver.find_element(By.XPATH, "//div[@class='{0}']//span[@title={1!r} and @class={2!r}]".format("_21nHd", title, userinfo_class))
+            act = ActionChains(driver)
+            act.move_to_element(el).click()
+        except:
+            el = driver.find_element(By.XPATH, "//div[@class='{0}']//span[@title={1!r} and @class={2!r}]".format("_21nHd", self.name, userinfo_class))
+            act = ActionChains(driver)
+            act.move_to_element(el).click()
+        
+        time.sleep(1)
         sup = bs4(driver.page_source, "html.parser")
         driver.save_screenshot("aaaa.png")
-        if sup.find_next("span", class_=usernumber_class):
+
+        if sup.find_next("h1", class_="", string="Dados do contato", style = "font-size: inherit;"):
             self.channel.type = 'contact'
             self.channel.number = sup.find_next("span", class_=usernumber_class).text
             self.channel.bio = sup.find_next("span", class_=userbio_class)["title"]
