@@ -1,4 +1,28 @@
+"""
+MIT License
 
+Copyright (c) 2022 Einai
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+"""
+import re
 import time
 import asyncio
 import platform
@@ -67,30 +91,28 @@ class Client():
     def _isTitleMatching(self):
         return True if self.driver.title == "WhatsApp" else False
 
+    def isSeed(self,element):
+        if "mensagens não lidas" in element.find_next("span",class_=count_class)["aria-label"]:
+            return True
+        elif "mensagem não lida" in element.find_next("span",class_=count_class)["aria-label"]:
+            return True
+        else:
+            return False
+
     async def _listner(self):
         while True:
             sup = bs4(self.driver.page_source, "html.parser")
-            panel = sup.findAll('div', class_=AllChats_class)
-            all = []
+            panel = sup.findAll("span",class_=count_class)
             for i in panel:
                 def e():
-                    if i.find_next("span",class_=count_class): 
-                        title = i.find_next("span", messageguildname_class)["title"]
-                        if title in all: return
-                        if not "mensagens não lidas" in i.find_next("span",class_=count_class)["aria-label"] or "mensagem não lida" in i.find_next("span",class_=count_class)["aria-label"]: return
-                        valid_msg_arg = {"message", Message(i)}
-
-                        try:
-                            self.driver.find_element(By.XPATH, "//span[@title='{0}']".format(title)).click()
-                        except:
-                            pass
-                        all.append(title)
-                        for event in self._listners["message"]:
-                            event["name"](*tuple([ valid_msg_arg[x] if x in validArgs else None for x in event["args"] ]))
+                    title = i.find_previous("span", class_ = messageguildname_class, dir = "auto", title = re.compile(".*"))["title"]
+                    valid_msg_arg = {"message": Message(i, self.driver)}
+                    for event in self._listners["message"]:
+                        pass
+                        event["name"](*tuple([ valid_msg_arg[x] if x in valid_msg_arg else None for x in event["args"] ]))
 
                 _thread.start_new_thread(e, ())
-                await asyncio.sleep(.005)
-            all.clear()
+                await asyncio.sleep(.5)
     def run(self):
         """run
         your bot was be start here.
